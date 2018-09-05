@@ -13,7 +13,7 @@ import javax.persistence.OneToOne;
 @Entity
 public class CartItem extends BaseEntity {
 	@OneToOne
-	private Product product;
+	private StoreItem item;
 
 	@Column
 	private Double quantity;
@@ -24,27 +24,28 @@ public class CartItem extends BaseEntity {
 	public CartItem() {
 	}
 
-	public CartItem(Product product) {
-		this.product = product;
-	}
-
-	public CartItem(Product product, Double quantity) {
-		this.product = product;
+	public CartItem(StoreItem item, double quantity) {
+		this.item = item;
 		this.quantity = quantity;
 	}
 
-	public CartItem(Product product, Double quantity, Cart cart) {
-		this.product = product;
+	public CartItem(StoreItem item, Double quantity) {
+		this.item = item;
+		this.quantity = quantity;
+	}
+
+	public CartItem(StoreItem item, Double quantity, Cart cart) {
+		this.item = item;
 		this.quantity = quantity;
 		this.cart = cart;
 	}
 
-	public Product getProduct() {
-		return product;
+	public StoreItem getItem() {
+		return item;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setItem(StoreItem item) {
+		this.item = item;
 	}
 
 	public Double getQuantity() {

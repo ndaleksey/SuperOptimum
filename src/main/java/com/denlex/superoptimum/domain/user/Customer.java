@@ -55,4 +55,25 @@ public class Customer extends User {
 	public void setOrders(Set<Order> orders) {
 		this.orders = orders;
 	}
+
+	public void addCart(Cart cart) {
+		cart.setCustomer(this);
+		this.carts.add(cart);
+	}
+
+	/*public Cart getActiveCart() throws Exception {
+		if (this.carts.isEmpty()) {
+			Cart cart = new Cart(CartStatus.ACTIVE);
+			addCart(cart);
+			return cart;
+		}
+
+		Optional<Cart> result = this.carts.stream().filter(cart -> cart.getStatus() == CartStatus.ACTIVE).findFirst();
+
+		if (!result.isPresent()) {
+			throw new Exception("Активная корзина не найдена");
+		}
+
+		return result.get();
+	}*/
 }

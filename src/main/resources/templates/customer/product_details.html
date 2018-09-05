@@ -106,13 +106,12 @@
 							<div class="product-btns">
 								<div class="qty-input">
 									<span class="text-uppercase">Количество: </span>
-									<input class="input" type="number" name="qty" value="1">
-									<input type="hidden" name="hidden_name" value="">
-									<input type="hidden" name="hidden_price" value="">
+									<input id="quantity" class="input" type="number" name="qty" value="1">
+									<input id="storeItemId" th:value="${storeItem.id}" type="hidden">
 								</div>
-								<button class="primary-btn add-to-cart" name="add_cart">
+								<button id="addCartItem" class="primary-btn add-to-cart">
 									<i class="fa fa-shopping-cart"></i>
-									<a style="color: #fff;" href="">Добавить в корзину</a>
+									Добавить в корзину
 								</button>
 								<div class="pull-right">
 									<button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
@@ -165,6 +164,32 @@
 <script src="../../static/js/checkout.js" th:src="@{/js/checkout.js}"></script>
 <script src="../../static/js/rwd-table.js?v=5.3.1"></script>
 <script>
+    $(document).ready(function () {
+        $('#addCartItem').on('click', function () {
+            var cartItem = {
+                "storeItemId": $('#storeItemId').val(),
+                "quantity": $('#quantity').val()
+            };
+            cartItem = JSON.stringify(cartItem);
+            console.log(cartItem);
+            $.ajax({
+                method: 'POST',
+                url: '/customer/cart/add_item',
+                data: cartItem,
+				dataType : 'json',
+				contentType: 'application/json; charset=utf-8',
+                success: function () {
+                    console.log("Продукт добавлен в корзину");
+                    alert("Продукт добавлен в корзину");
+                },
+                error: function (data) {
+                    console.log('error');
+                    console.log(data);
+                }
+            });
+        });
+    });
+
     $(function () {
         $('#bs-deps').on('hide.bs.collapse show.bs.collapse', function () {
             $('#bs-deps-toggle').children('span').toggleClass('fa-chevron-down').toggleClass('fa-chevron-up');

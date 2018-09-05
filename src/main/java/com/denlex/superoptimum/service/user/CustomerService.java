@@ -1,5 +1,6 @@
 package com.denlex.superoptimum.service.user;
 
+import com.denlex.superoptimum.domain.product.Cart;
 import com.denlex.superoptimum.domain.user.Customer;
 
 /**
@@ -8,5 +9,9 @@ import com.denlex.superoptimum.domain.user.Customer;
 public interface CustomerService {
 	Customer save(Customer customer);
 
+	Customer findById(Long id);
+
 	Customer findByUsername(String username);
+
+	Cart getActiveCustomerCart(Long customerId);
 }

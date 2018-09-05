@@ -45,6 +45,7 @@ public class SecurityConfiguration {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 			http
+					.httpBasic().and()
 					.antMatcher("/customer/**")
 					.authorizeRequests()
 					.antMatchers("/customer/loading").permitAll()
@@ -85,6 +86,7 @@ public class SecurityConfiguration {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 			http
+					.httpBasic().and()
 					.antMatcher("/distributor/**")
 					.authorizeRequests()
 					.antMatchers("/distributor/loading").permitAll()

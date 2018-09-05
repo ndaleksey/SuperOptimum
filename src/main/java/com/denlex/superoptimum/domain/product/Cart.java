@@ -24,8 +24,7 @@ public class Cart extends BaseEntity {
 	public Cart() {
 	}
 
-	public Cart(Customer customer, CartStatus status) {
-		this.customer = customer;
+	public Cart(CartStatus status) {
 		this.status = status;
 	}
 
