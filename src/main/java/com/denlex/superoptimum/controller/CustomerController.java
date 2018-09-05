@@ -3,6 +3,7 @@ package com.denlex.superoptimum.controller;
 import com.denlex.superoptimum.domain.location.City;
 import com.denlex.superoptimum.domain.product.*;
 import com.denlex.superoptimum.domain.user.Customer;
+import com.denlex.superoptimum.exception.CartNotFoundException;
 import com.denlex.superoptimum.service.product.CategoryService;
 import com.denlex.superoptimum.service.product.StoreItemService;
 import com.denlex.superoptimum.service.product.SubcategoryService;
@@ -82,11 +83,14 @@ public class CustomerController {
 	}
 
 	@GetMapping("/products/category/{categoryId}")
-	public String showProductsByCategory(@PathVariable Long categoryId, Model model, HttpSession session) {
+	public String showProductsByCategory(@PathVariable Long categoryId, Model model, HttpSession session) throws CartNotFoundException {
 		Customer customer = (Customer) session.getAttribute("customer");
+
+		if (customer == null) throw new CartNotFoundException();
+
 		model.addAttribute("customer", customer);
 
-		Cart activeCart = (Cart) session.getAttribute("cart");
+		Cart activeCart = customerService.getActiveCustomerCart(customer.getId());
 		model.addAttribute("cart", activeCart);
 
 		Category category = categoryService.findById(categoryId);
@@ -100,11 +104,15 @@ public class CustomerController {
 	}
 
 	@GetMapping("/products/subcategory/{subcategoryId}")
-	public String showProductsBySubcategory(@PathVariable Long subcategoryId, Model model, HttpSession session) {
+	public String showProductsBySubcategory(@PathVariable Long subcategoryId, Model model,
+											HttpSession session) throws CartNotFoundException {
 		Customer customer = (Customer) session.getAttribute("customer");
+
+		if (customer == null) throw new CartNotFoundException();
+
 		model.addAttribute("customer", customer);
 
-		Cart activeCart = (Cart) session.getAttribute("cart");
+		Cart activeCart = customerService.getActiveCustomerCart(customer.getId());
 		model.addAttribute("cart", activeCart);
 
 		Subcategory subcategory = subcategoryService.findById(subcategoryId);
@@ -118,11 +126,14 @@ public class CustomerController {
 	}
 
 	@GetMapping("/products/product/{productId}")
-	public String showProductDetails(@PathVariable Long productId, Model model, HttpSession session) {
+	public String showProductDetails(@PathVariable Long productId, Model model, HttpSession session) throws Exception {
 		Customer customer = (Customer) session.getAttribute("customer");
+
+		if (customer == null) throw new CartNotFoundException();
+
 		model.addAttribute("customer", customer);
 
-		Cart activeCart = (Cart) session.getAttribute("cart");
+		Cart activeCart = customerService.getActiveCustomerCart(customer.getId());
 		model.addAttribute("cart", activeCart);
 
 		StoreItem storeItem = storeItemService.findById(productId);
@@ -134,45 +145,62 @@ public class CustomerController {
 	}
 
 	@GetMapping("/cart")
-	public String showCart(Model model, HttpSession session) {
+	public String showCart(Model model, HttpSession session) throws CartNotFoundException {
 		Customer customer = (Customer) session.getAttribute("customer");
+
+		if (customer == null) throw new CartNotFoundException();
+
 		model.addAttribute("customer", customer);
 
-		Cart activeCart = (Cart) session.getAttribute("cart");
+		Cart activeCart = customerService.getActiveCustomerCart(customer.getId());
 		model.addAttribute("cart", activeCart);
 
 		return "customer/cart";
 	}
 
-	@PostMapping(value = "/cart/add_item",
+	@GetMapping(value = "/cart/{cartId}/item/{itemId}/quantity")
+	public ResponseEntity<Integer> getCartItemQuantity(@PathVariable("cartId") Long cartId,
+													 @PathVariable("itemId") Long itemId)
+			throws CartNotFoundException {
+		Cart activeCart = cartService.findById(cartId);
+
+		if (activeCart == null) throw new CartNotFoundException();
+
+		Optional<CartItem> cartItem =
+				activeCart.getItems().stream().filter(i -> i.getItem().getId() == itemId).findFirst();
+
+		if (!cartItem.isPresent()) return new ResponseEntity<>(0, HttpStatus.OK);
+
+		return new ResponseEntity<>(cartItem.get().getQuantity(), HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/cart/{cartId}/add_item",
 			consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE})
 	@ResponseBody
-	public ResponseEntity<Cart> addCartItem(@RequestBody com.denlex.superoptimum.dto.CartItem item, HttpSession session) {
-		Cart activeCart = (Cart) session.getAttribute("cart");
-
-		if (activeCart == null) {
-			return new ResponseEntity<>((Cart) null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-
-		activeCart = cartService.findById(activeCart.getId());
-		StoreItem storeItem = storeItemService.findById(item.getStoreItemId());
+	public HttpStatus addCartItem(@RequestBody com.denlex.superoptimum.dto.CartItem item,
+								  @PathVariable("cartId") Long cartId, Model model) {
+		Cart activeCart = cartService.findById(cartId);
+		Long storeItemId = Long.valueOf(item.getStoreItemId());
+		int quantity = Integer.valueOf(item.getQuantity());
+		StoreItem storeItem = storeItemService.findById(storeItemId);
 
 		if (activeCart.getItems().isEmpty()) {
-			activeCart.addItems(new CartItem(storeItem, item.getQuantity()));
+			activeCart.addItems(new CartItem(storeItem, quantity));
 		} else {
 			Optional<CartItem> result = activeCart.getItems()
-					.stream().filter(cartItem -> cartItem.getItem().getId() == item.getStoreItemId()).findFirst();
+					.stream().filter(cartItem -> cartItem.getItem().getId() == storeItemId).findFirst();
 
 			if (!result.isPresent()) {
-				activeCart.addItems(new CartItem(storeItem, item.getQuantity()));
+				activeCart.addItems(new CartItem(storeItem, quantity));
 			} else {
 				CartItem cartItem = result.get();
-				cartItem.setQuantity(cartItem.getQuantity() + item.getQuantity());
+				cartItem.setQuantity(quantity);
 			}
 		}
 
 		activeCart = cartService.save(activeCart);
-		return new ResponseEntity<>(activeCart, HttpStatus.OK);
+		model.addAttribute("cart", activeCart);
+		return HttpStatus.OK;
 	}
 
 	private String getUsername() {

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
 	<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -34,8 +33,7 @@
 		  th:href="@{/css/checkout_style.css}"/>
 
 	<!--table resp-->
-	<link rel="stylesheet" href="../../static/css/rwd-table.min.css?v=5.3.1">
-	<link rel="stylesheet" href="../static/css/docs.min.css?v=5.3.1">
+	<link rel="stylesheet" href="../../static/css/rwd-table.min.css?v=5.3.1" th:href="@{/css/rwd-table.min.css}">
 
 	<script type="text/javascript">
         var _gaq = _gaq || [];
@@ -347,7 +345,7 @@
 <script src="../../static/js/jquery.zoom.min.js" th:src="@{/js/jquery.zoom.min.js}"></script>
 <script src="../../static/js/main.js" th:src="@{/js/main.js}"></script>
 <script src="../../static/js/checkout.js" th:src="@{/js/checkout.js}"></script>
-<script src="../../static/js/rwd-table.js?v=5.3.1"></script>
+<script src="../../static/js/rwd-table.js?v=5.3.1" th:src="@{/js/rwd-table.js}"></script>
 <script>
     $(function () {
         $('#bs-deps').on('hide.bs.collapse show.bs.collapse', function () {

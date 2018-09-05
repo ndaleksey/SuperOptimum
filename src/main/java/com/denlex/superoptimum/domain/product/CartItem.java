@@ -16,7 +16,7 @@ public class CartItem extends BaseEntity {
 	private StoreItem item;
 
 	@Column
-	private Double quantity;
+	private int quantity;
 
 	@ManyToOne
 	private Cart cart;
@@ -24,17 +24,12 @@ public class CartItem extends BaseEntity {
 	public CartItem() {
 	}
 
-	public CartItem(StoreItem item, double quantity) {
+	public CartItem(StoreItem item, int quantity) {
 		this.item = item;
 		this.quantity = quantity;
 	}
 
-	public CartItem(StoreItem item, Double quantity) {
-		this.item = item;
-		this.quantity = quantity;
-	}
-
-	public CartItem(StoreItem item, Double quantity, Cart cart) {
+	public CartItem(StoreItem item, int quantity, Cart cart) {
 		this.item = item;
 		this.quantity = quantity;
 		this.cart = cart;
@@ -48,11 +43,11 @@ public class CartItem extends BaseEntity {
 		this.item = item;
 	}
 
-	public Double getQuantity() {
+	public int getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(Double quantity) {
+	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
 

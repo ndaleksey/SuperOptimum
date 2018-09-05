@@ -5,30 +5,30 @@ package com.denlex.superoptimum.dto;
  */
 
 public class CartItem {
-	private Long storeItemId;
-	private double quantity;
+	private String storeItemId;
+	private String quantity;
 
 	public CartItem() {
 	}
 
-	public CartItem(Long storeItemId, double quantity) {
+	public CartItem(String storeItemId, String quantity) {
 		this.storeItemId = storeItemId;
 		this.quantity = quantity;
 	}
 
-	public Long getStoreItemId() {
+	public String getStoreItemId() {
 		return storeItemId;
 	}
 
-	public void setStoreItemId(Long storeItemId) {
+	public void setStoreItemId(String storeItemId) {
 		this.storeItemId = storeItemId;
 	}
 
-	public double getQuantity() {
+	public String getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(double quantity) {
+	public void setQuantity(String quantity) {
 		this.quantity = quantity;
 	}
 }
