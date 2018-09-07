@@ -21,3 +21,7 @@ table td {
 	background-color: white;
 	color: #400040;
 }
+
+td.td-center {
+	text-align: center;
+}

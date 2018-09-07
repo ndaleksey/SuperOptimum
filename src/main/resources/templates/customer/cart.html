@@ -1,6 +1,5 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="utf-8">
@@ -14,28 +13,31 @@
 	<link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
 
 	<!-- Bootstrap -->
-	<link type="text/css" rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+	<link type="text/css" rel="stylesheet" href="../../static/css/bootstrap.min.css"
+		  th:href="@{/css/bootstrap.min.css}"/>
 
 	<!-- Slick -->
-	<link type="text/css" rel="stylesheet" href="../../static/css/slick.css"/>
-	<link type="text/css" rel="stylesheet" href="../../static/css/slick-theme.css"/>
+	<link type="text/css" rel="stylesheet" href="../../static/css/slick.css" th:href="@{/css/slick.css}"/>
+	<link type="text/css" rel="stylesheet" href="../../static/css/slick-theme.css" th:href="@{/css/slick-theme.css}"/>
 
 	<!-- nouislider -->
-	<link type="text/css" rel="stylesheet" href="../../static/css/nouislider.min.css"/>
+	<link type="text/css" rel="stylesheet" href="../../static/css/nouislider.min.css"
+		  th:href="@{/css/nouislider.min.css}"/>
 
 	<!-- Font Awesome Icon -->
-	<link rel="stylesheet" href="../../static/css/font-awesome.min.css">
+	<link rel="stylesheet" href="../../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}">
 
 	<!-- Custom stlylesheet -->
-	<link type="text/css" rel="stylesheet" href="../../static/css/style.css"/>
+	<link type="text/css" rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
 
-	<link type="text/css" rel="stylesheet" href="../../static/css/table.css"/>
-	<link type="text/css" rel="stylesheet" href="../../static/css/checkout_style.css"/>
-
+	<link type="text/css" rel="stylesheet" href="../../static/css/checkout_style.css"
+		  th:href="@{/css/checkout_style.css}"/>
 
 	<!--table resp-->
-	<link rel="stylesheet" href="../../static/css/rwd-table.min.css?v=5.3.1">
-	<link rel="stylesheet" href="../static/css/docs.min.css?v=5.3.1">
+	<link rel="stylesheet" href="../../static/css/rwd-table.min.css?v=5.3.1" th:href="@{/css/rwd-table.min.css}">
+
+	<link type="text/css" rel="stylesheet" href="../../static/css/table.css" th:href="@{/css/table.css}"/>
+
 
 	<script type="text/javascript">
         var _gaq = _gaq || [];
@@ -55,353 +57,178 @@
 </head>
 
 <body>
-	
-<header>
-		<!-- top Header -->
-		<div id="top-header">
-			<div class="container">
-				<div class="pull-left">
-                    
 
-                        <span>Добро пожаловать  в OPTIMUM BEAUTY   :    </span><span></span>
- <span>   :    </span><span></span>";
+<!-- HEADER -->
+<header th:insert="customer/header.html :: header"></header>
+<!-- /HEADER -->
 
-
-                 
-                        <b>Добро пожаловать Гость</b>
-					
-				</div>
-				<div class="pull-right">
-					<ul class="header-top-links">
-						
-					<button style='width:100px;' background:#800080; border-radius:5px;' class='btn next-btn'><a href='checkout.php' class='text-uppercase' style='color:#fff;'>Войти</a></buuton>";
-			
-					<button style='width:100px;' background:#800080; border-radius:5px;' class='btn next-btn'><a href='logout.php' class='text-uppercase' style='color:#fff;'>Выити</a></buuton>";
-
-						
-					</ul>
-				</div>
-			</div>
-		</div>
-		<!-- /top Header -->
-
-		<!-- header -->
-		<div id="header">
-			<div class="container">
-				<div class="pull-left">
-					<!-- Logo -->
-					<div class="header-logo">
-						<a class="logo" href="main.html">
-							<img src="..static/img/logo.png" alt="">
-						</a>
-					</div>
-					<!-- /Logo -->
-
-					<!-- Search -->
-					<div class="header-search">
-						<div class="input-group">
-                           <span class="input-group-addon">Пойск</span>
-                           <input type="text" name="search_text" id="search_text" placeholder="искать продукт..." class="form-control" style="width: 500px; float: left;" />
-                        </div>
-					</div>
-					<!-- /Search -->
-					
-				</div>
-				<div class="pull-right">
-					<ul class="header-btns">
-						<!-- Account -->
-						<li class="header-account dropdown default-dropdown">
-							<div class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="true">
-								<div class="header-btns-icon">
-									<i class="fa fa-user-o"></i>
-								</div>
-								<strong >Личный кабинет <i class="fa fa-caret-down"></i></strong>
-							</div>
-							
-							
-							<ul class="custom-menu">
-								<li><a href="../my_account_customer.html"><i class="fa fa-user-o"></i> личный кабинет</a></li>
-								
-								<li><a href="checkout.html"><i class="fa fa-check"></i> Checkout</a></li>
-								<li><a href="logout.html"><i class="fa fa-unlock-alt"></i> Выйти</a></li>
-								
-							</ul>
-						</li>
-						<!-- /Account -->
-
-						<!-- Cart -->
-						<li class="header-cart dropdown default-dropdown">
-							<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-								<div class="header-btns-icon">
-									<i class="fa fa-shopping-cart"></i>
-									<span class="qty">tottal item</span>
-								</div>
-								<strong class="text-uppercase">Мой заказы:</strong>
-								<br>
-								<span>tottal price</span>
-							</a>
-							<div class="custom-menu">
-								<div id="shopping-cart">
-									<div class="shopping-cart-list">
-										
-									</div>
-									<div class="shopping-cart-btns">
-										<a href="cart.html"><button class="main-btn">заказы</button></a>
-										<button class="primary-btn">Checkout <i class="fa fa-arrow-circle-right"></i></button>
-
-
-									</div>
-								</div>
-							</div>
-						</li>
-						<!-- /Cart -->
-
-						<!-- Mobile nav toggle-->
-						<li class="nav-toggle">
-							<button class="nav-toggle-btn main-btn icon-btn"><i class="fa fa-bars"></i></button>
-						</li>
-						<!-- / Mobile nav toggle -->
-					</ul>
-				</div>
-			</div>
-			<!-- header -->
-			
-		</div>
-		<!-- container -->
-	</header>
-	<!-- /HEADER -->
-    
 <!-- NAVIGATION -->
-	<div id="navigation">
-		<!-- container -->
-		<div class="container">
-			<div id="responsive-nav">
-				<!-- category nav -->
-				<div class="category-nav">
-					<span class="category-header">Категории <i class="fa fa-list"></i></span>
-<ul class="category-list">
-	<li class="dropdown side-dropdown">
-		<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" name="cosm">Косметология <i class="fa fa-angle-right"></i></a>
-		<div class="custom-menu">
-			<div class="row">
-				<div class="col-md-4">
-					<ul class="list-links">
-						<li><h3 class="list-links-title"><a href="" name="allcosm">Косметология</a>  </h3></li>
+<header th:insert="customer/navigation.html :: navigation"></header>
+<!--<div id="navigation">
+	&lt;!&ndash; container &ndash;&gt;
+	<div class="container">
+		<div id="responsive-nav">
+			&lt;!&ndash; category nav &ndash;&gt;
+			<div class="category-nav">
+				<span class="category-header">Категории <i class="fa fa-list"></i></span>
+				<ul class="category-list">
+					<li class="dropdown side-dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" name="cosm">Косметология
+							<i class="fa fa-angle-right"></i></a>
+						<div class="custom-menu">
+							<div class="row">
+								<div class="col-md-4">
+									<ul class="list-links">
+										<li>
+											<h3 class="list-links-title">
+												<a href="" name="allcosm">Косметология</a>
+											</h3>
+										</li>
+										<li style='width:300px;'><a href=''></a></li>
+										";
 
-						
-<li style='width:300px;'><a href=''></a></li>";
+									</ul>
+									<hr class="hidden-md hidden-lg">
+								</div>
+							</div>
+					</li>
 
-					</ul>
-					<hr class="hidden-md hidden-lg">
-				</div>
-
-
+					<li><a href="../all_products.html">Все продукты</a></li>
+				</ul>
 			</div>
-		</li>
+			&lt;!&ndash; menu nav &ndash;&gt;
+			<div class="menu-nav">
+				<span class="menu-header">Menu <i class="fa fa-bars"></i></span>
+				<ul class="menu-list">
 
-													<li><a href="../all_products.html">Все продукты</a></li>
-												</ul>
-											</div>
-											<!-- menu nav -->
-											<div class="menu-nav">
-												<span class="menu-header">Menu <i class="fa fa-bars"></i></span>
-												<ul class="menu-list">
-
-													<li id="center1" ><a href="../all_products.html" title="живой пойск"></a></li>
-												</ul>
-											</div>
-<!-- menu nav -->
+					<li id="center1"><a href="../all_products.html" title="живой пойск"></a></li>
+				</ul>
 			</div>
-		</div>
-		<!-- /container -->
-	</div>
-	<!-- /NAVIGATION -->
-
-
-	<!-- BREADCRUMB -->
-	<div id="breadcrumb">
-		<div class="container">
-			<ul class="breadcrumb">
-				<li><a href="main.html">Home</a></li>
-				<li class="active">Cart</li>
-			</ul>
+			&lt;!&ndash; menu nav &ndash;&gt;
 		</div>
 	</div>
-	<!-- /BREADCRUMB -->
+	&lt;!&ndash; /container &ndash;&gt;
+</div>-->
+<!-- /NAVIGATION -->
 
-	<!-- section -->
-	<div class="section">
-		<!-- container -->
-		<div class="container">
-			<!-- row -->
-			<div class="row">
-				<!-- section -->
-	<div class="section">
-		
-		
-				
-				
-				<form action="" method="post" enctype="multipart/form-data" >
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb">
+	<div class="container">
+		<ul class="breadcrumb">
+			<li>
+				<a href="main.html" th:href="@{/customer/main}">Главная</a>
+			</li>
+			<li class="active">Корзина</li>
+		</ul>
+	</div>
+</div>
+<!-- /BREADCRUMB -->
+
+<!-- section -->
+<div class="section">
+	<!-- container -->
+	<div class="container">
+		<!-- row -->
+		<div class="row">
+			<!-- section -->
+			<div class="section">
+				<h2 th:if="${#lists.isEmpty(cart.items)}">Корзина пуста</h2>
+
+				<div th:if="${not #lists.isEmpty(cart.items)}">
 					<table width="100%" align="center">
-						
-						<tr style="text-align:center;" >
-							<th style="text-align:center;" >Remove</th>
-							<th style="text-align:center;" >Product</th>
-							<th style="text-align:center;" >Quantity</th>
-							<th style="text-align:center;" > Price</th>
-							<th style="text-align:center;" > Total of a Product</th>
+						<thead>
+						<tr>
+							<th>№ п/п</th>
+							<th>Наименование продукта</th>
+							<th>Количество</th>
+							<th>Цена (руб.)</th>
+							<th>Всего (руб.)</th>
+							<th>Действие</th>
 						</tr>
-
-                        
-
-
-						<tr align="center"  >
-							<td><a href="">Remove</a></td>
-							<td></td>
-							<td><input type="text" size="4" name="qty" value="" ></td>
-							
-
-							<td>product price</td>
-							<td>total price</td>
-
-
-						
-        	             
-        	             	<td colspan="4">Net Total</td>
-							<td>net total</td>
-						</tr>  
-
-
-						<tr align="center">
-							<td colspan="2"><input type="submit" name="update_cart" value="Update Cart"></td>
-							 <td><button><a href='main.html' >Continue Shopping</a> </button></td>
-							<td><button ><a href="../payment.html">CheckOut</a></button></td>
+						</thead>
+						<tbody>
+						<tr th:each="item,row : ${cart.items}">
+							<td class="td-center">
+								<span th:text="${row.index + 1}"></span>
+							</td>
+							<td>
+								<span th:text="${item.item.product.name}"></span>
+							</td>
+							<td class="td-center">
+								<span th:text="${item.quantity}"></span>
+							</td>
+							<td class="td-center">
+								<span th:text="${item.item.price}"></span>
+							</td>
+							<td class="td-center">
+								<span th:text="${item.quantity * item.item.price}"></span>
+							</td>
+							<td class="td-center">
+								<input id="cartId" type="hidden" th:value="${cart.id}">
+								<button id="deleteItem" class="btn btn-danger" type="button"
+										th:onclick="|deleteItemFromCart(${item.id}, ${cart.id})|">Удалить
+								</button>
+							</td>
 						</tr>
-                          
+						<!--<tr>
+							<td colspan="3">Итого:</td>
+							<td>
+								<span th:text="${#aggregates.sum(cart.items.{quantity*price})}"></span>
+							</td>
+						</tr>-->
+						</tbody>
 					</table>
-
-				</form>	
-				
-			
-		
-		<br>
-		
-	</div>
-	<!-- /section -->
+				</div>
 			</div>
-			<!-- /row -->
+			<!-- /section -->
 		</div>
-		<!-- /container -->
+		<!-- /row -->
 	</div>
-	<!-- /section -->
+	<!-- /container -->
+</div>
+<!-- /section -->
 
 <!-- FOOTER -->
-	<footer id="footer" class="section section-grey">
-		<!-- container -->
-		<div class="container">
-			<!-- row -->
-			<div class="row">
-				<!-- footer widget -->
-				<div class="col-md-3 col-sm-6 col-xs-6">
-					<div class="footer">
-						<!-- footer logo -->
-						<div class="footer-logo">
-							<a class="logo" href="#">
-		            <img src="..static/img/logo.png" alt="">
-		          </a>
-						</div>
-						<!-- /footer logo -->
+<div th:insert="customer/footer.html :: footer"></div>
+<!-- /FOOTER -->
 
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna</p>
-
-						<!-- footer social -->
-						<ul class="footer-social">
-							<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-							<li><a href="#"><i class="fa fa-instagram"></i></a></li>
-							<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-							<li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-						</ul>
-						<!-- /footer social -->
-					</div>
-				</div>
-				<!-- /footer widget -->
-
-				<!-- footer widget -->
-				<div class="col-md-3 col-sm-6 col-xs-6">
-					<div class="footer">
-						<h3 class="footer-header">My Account</h3>
-						<ul class="list-links">
-							<li><a href="#">My Account</a></li>
-							<li><a href="#">My Wishlist</a></li>
-							<li><a href="#">Compare</a></li>
-							<li><a href="#">Checkout</a></li>
-							<li><a href="#">Login</a></li>
-						</ul>
-					</div>
-				</div>
-				<!-- /footer widget -->
-
-				<div class="clearfix visible-sm visible-xs"></div>
-
-				<!-- footer widget -->
-				<div class="col-md-3 col-sm-6 col-xs-6">
-					<div class="footer">
-						<h3 class="footer-header">Customer Service</h3>
-						<ul class="list-links">
-							<li><a href="#">About Us</a></li>
-							<li><a href="#">Shiping & Return</a></li>
-							<li><a href="#">Shiping Guide</a></li>
-							<li><a href="#">FAQ</a></li>
-						</ul>
-					</div>
-				</div>
-				<!-- /footer widget -->
-
-				<!-- footer subscribe -->
-				<div class="col-md-3 col-sm-6 col-xs-6">
-					<div class="footer">
-						<h3 class="footer-header">Stay Connected</h3>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.</p>
-						<form>
-							<div class="form-group">
-								<input class="input" placeholder="Enter Email Address">
-							</div>
-							<button class="primary-btn">Join Newslatter</button>
-						</form>
-					</div>
-				</div>
-				<!-- /footer subscribe -->
-			</div>
-			<!-- /row -->
-			<hr>
-			<!-- row -->
-			<div class="row">
-				<div class="col-md-8 col-md-offset-2 text-center">
-					<!-- footer copyright -->
-					<div class="footer-copyright">
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-						Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Designed <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="#" target="_blank">Daniel</a>
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-					</div>
-					<!-- /footer copyright -->
-				</div>
-			</div>
-			<!-- /row -->
-		</div>
-		<!-- /container -->
-	</footer>
-	<!-- /FOOTER -->
 <!-- jQuery Plugins -->
-<script src="../../static/js/jquery.min.js"></script>
-<script src="../../static/js/bootstrap.min.js"></script>
-<script src="../../static/js/slick.min.js"></script>
-<script src="../../static/js/nouislider.min.js"></script>
-<script src="../../static/js/jquery.zoom.min.js"></script>
-<script src="../../static/js/main.js"></script>
-<script src="../../static/js/checkout.js"></script>
-<script src="../../static/js/rwd-table.js?v=5.3.1"></script>
+<script src="../../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+<script src="../../static/js/slick.min.js" th:src="@{/js/slick.min.js}"></script>
+<script src="../../static/js/nouislider.min.js" th:src="@{/js/nouislider.min.js}"></script>
+<script src="../../static/js/jquery.zoom.min.js" th:src="@{/js/jquery.zoom.min.js}"></script>
+<script src="../../static/js/main.js" th:src="@{/js/main.js}"></script>
+<script src="../../static/js/checkout.js" th:src="@{/js/checkout.js}"></script>
+<script src="../../static/js/rwd-table.js?v=5.3.1" th:src="@{/js/rwd-table.js}"></script>
 <script>
+    function deleteItemFromCart(itemId, cartId) {
+        if (!confirm('Вы хотите удалить продукт из корзины?')) return;
+
+        $.ajax({
+            method: 'DELETE',
+            url: 'cart/' + cartId + '/item/' + itemId,
+            success: function () {
+                console.log('Продукт удален из корзины');
+                location.reload();
+            },
+			error: function () {
+                console.log('Ошибка удаления продукта из коризины');
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        /*$('#deleteItem').on('click', function() {
+			let cartId = $('')
+
+			if (confirm('Вы хотите удалить продукт из корзины?')) {
+				deleteItemFromCart()
+			}
+		});*/
+    });
+
     $(function () {
         $('#bs-deps').on('hide.bs.collapse show.bs.collapse', function () {
             $('#bs-deps-toggle').children('span').toggleClass('fa-chevron-down').toggleClass('fa-chevron-up');

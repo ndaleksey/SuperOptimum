@@ -4,6 +4,7 @@ import com.denlex.superoptimum.domain.location.City;
 import com.denlex.superoptimum.domain.product.*;
 import com.denlex.superoptimum.domain.user.Customer;
 import com.denlex.superoptimum.exception.CartNotFoundException;
+import com.denlex.superoptimum.exception.CustomerNotFoundInSessionException;
 import com.denlex.superoptimum.service.product.CategoryService;
 import com.denlex.superoptimum.service.product.StoreItemService;
 import com.denlex.superoptimum.service.product.SubcategoryService;
@@ -83,10 +84,11 @@ public class CustomerController {
 	}
 
 	@GetMapping("/products/category/{categoryId}")
-	public String showProductsByCategory(@PathVariable Long categoryId, Model model, HttpSession session) throws CartNotFoundException {
+	public String showProductsByCategory(@PathVariable Long categoryId, Model model,
+										 HttpSession session) throws CustomerNotFoundInSessionException {
 		Customer customer = (Customer) session.getAttribute("customer");
 
-		if (customer == null) throw new CartNotFoundException();
+		if (customer == null) throw new CustomerNotFoundInSessionException();
 
 		model.addAttribute("customer", customer);
 
@@ -105,10 +107,10 @@ public class CustomerController {
 
 	@GetMapping("/products/subcategory/{subcategoryId}")
 	public String showProductsBySubcategory(@PathVariable Long subcategoryId, Model model,
-											HttpSession session) throws CartNotFoundException {
+											HttpSession session) throws CustomerNotFoundInSessionException {
 		Customer customer = (Customer) session.getAttribute("customer");
 
-		if (customer == null) throw new CartNotFoundException();
+		if (customer == null) throw new CustomerNotFoundInSessionException();
 
 		model.addAttribute("customer", customer);
 
@@ -126,10 +128,11 @@ public class CustomerController {
 	}
 
 	@GetMapping("/products/product/{productId}")
-	public String showProductDetails(@PathVariable Long productId, Model model, HttpSession session) throws Exception {
+	public String showProductDetails(@PathVariable Long productId, Model model, HttpSession session)
+			throws CustomerNotFoundInSessionException {
 		Customer customer = (Customer) session.getAttribute("customer");
 
-		if (customer == null) throw new CartNotFoundException();
+		if (customer == null) throw new CustomerNotFoundInSessionException();
 
 		model.addAttribute("customer", customer);
 
@@ -145,10 +148,10 @@ public class CustomerController {
 	}
 
 	@GetMapping("/cart")
-	public String showCart(Model model, HttpSession session) throws CartNotFoundException {
+	public String showCart(Model model, HttpSession session) throws CustomerNotFoundInSessionException {
 		Customer customer = (Customer) session.getAttribute("customer");
 
-		if (customer == null) throw new CartNotFoundException();
+		if (customer == null) throw new CustomerNotFoundInSessionException();
 
 		model.addAttribute("customer", customer);
 
@@ -160,7 +163,7 @@ public class CustomerController {
 
 	@GetMapping(value = "/cart/{cartId}/item/{itemId}/quantity")
 	public ResponseEntity<Integer> getCartItemQuantity(@PathVariable("cartId") Long cartId,
-													 @PathVariable("itemId") Long itemId)
+													   @PathVariable("itemId") Long itemId)
 			throws CartNotFoundException {
 		Cart activeCart = cartService.findById(cartId);
 
@@ -200,6 +203,17 @@ public class CustomerController {
 
 		activeCart = cartService.save(activeCart);
 		model.addAttribute("cart", activeCart);
+		return HttpStatus.OK;
+	}
+
+	@DeleteMapping(value = "/cart/{cartId}/item/{itemId}")
+	@ResponseBody
+	public HttpStatus deleteProductFromCart(@PathVariable("cartId") Long cartId, @PathVariable(
+			"itemId") Long itemId) {
+		Cart activeCart = cartService.findById(cartId);
+		activeCart.deleteItem(itemId);
+		cartService.save(activeCart);
+
 		return HttpStatus.OK;
 	}
 

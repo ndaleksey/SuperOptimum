@@ -5,6 +5,7 @@ import com.denlex.superoptimum.domain.user.Customer;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -61,5 +62,11 @@ public class Cart extends BaseEntity {
 		for (CartItem item : items) {
 			addItem(item);
 		}
+	}
+
+	public void deleteItem(Long id) {
+		Optional<CartItem> result =
+				this.getItems().stream().filter(i -> i.getId() == id).findFirst();
+		if (result.isPresent()) this.getItems().remove(result.get());
 	}
 }

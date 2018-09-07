@@ -53,8 +53,7 @@
 
 <body>
 <!-- HEADER -->
-<header th:insert="customer/header.html :: header">
-</header>
+<header th:insert="customer/header.html :: header"></header>
 <!-- /HEADER -->
 
 <!-- NAVIGATION -->
@@ -334,8 +333,9 @@
 </div>
 <!-- /section -->
 
-
+<!--FOOTER-->
 <div th:insert="customer/footer.html :: footer"></div>
+<!--FOOTER-->
 
 <!-- jQuery Plugins -->
 <script src="../../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
