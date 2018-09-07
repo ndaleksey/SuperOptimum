@@ -45,7 +45,7 @@
 						</div>
 					</li>
 					<li>
-						<a href="../all_products.html">Все продукты</a>
+						<a th:href="@{/customer/all_products}">Все продукты</a>
 					</li>
 				</ul>
 
@@ -54,8 +54,9 @@
 			<div class="menu-nav">
 				<span class="menu-header">Menu <i class="fa fa-bars"></i></span>
 				<ul class="menu-list">
-
-					<li id="center1"><a href="ll_products.html" title="живой пойск"></a></li>
+					<li id="center1">
+						<a th:href="@{/customer/all_products}" title="живой поиск"></a>
+					</li>
 				</ul>
 			</div>
 			<!-- menu nav -->

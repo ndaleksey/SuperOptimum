@@ -39,7 +39,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public Cart getActiveCustomerCart(Long customerId) {
+	public Cart findActiveCartForCustomer(Long customerId) {
 		Customer customer = this.findById(customerId);
 		Set<Cart> carts = customer.getCarts();
 

@@ -11,7 +11,6 @@
 			<div class="pull-left">
 				Пользователь: <span th:text="${customer.name}"></span>
 			</div>
-
 			<div class="pull-right">
 				<ul class="header-top-links">
 					<button style="width:100px; background:#800080; border-radius:5px;" class="btn next-btn">
@@ -30,10 +29,20 @@
 				<!-- Logo -->
 				<div class="header-logo">
 					<a class="logo" href="#" th:href="@{/customer/main}">
-						<img src="../static/img/logo.png" th:src="@{/img/logo.png}" alt="logo">
+						<img src="../../static/img/logo.png" th:src="@{/img/logo.png}" alt="logo">
 					</a>
 				</div>
 				<!-- /Logo -->
+				<!-- Search -->
+				<div th:if="${showSearch eq true}" class="header-search">
+					<div class="input-group">
+						<span class="input-group-addon">Поиск</span>
+						<input type="text" name="search_text" id="search_text"
+							   placeholder="Введите наименование продукта"
+							   class="form-control" style="width: 500px; float: left;"/>
+					</div>
+				</div>
+				<!-- /Search -->
 			</div>
 			<div class="pull-right">
 				<ul class="header-btns">

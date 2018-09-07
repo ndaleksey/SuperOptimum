@@ -7,11 +7,13 @@ import com.denlex.superoptimum.exception.CartNotFoundException;
 import com.denlex.superoptimum.exception.CustomerNotFoundInSessionException;
 import com.denlex.superoptimum.service.product.CategoryService;
 import com.denlex.superoptimum.service.product.StoreItemService;
+import com.denlex.superoptimum.service.product.StoreService;
 import com.denlex.superoptimum.service.product.SubcategoryService;
 import com.denlex.superoptimum.service.user.CartItemService;
 import com.denlex.superoptimum.service.user.CartService;
 import com.denlex.superoptimum.service.user.CustomerService;
 import com.denlex.superoptimum.service.user.impl.CustomerCredentialsService;
+import com.denlex.superoptimum.util.StoreItemByDistributorComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -26,8 +28,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Shishkov A.V. on 19.08.18.
@@ -47,6 +49,9 @@ public class CustomerController {
 
 	@Autowired
 	private CustomerService customerService;
+
+	@Autowired
+	private StoreService storeService;
 
 	@Autowired
 	private StoreItemService storeItemService;
@@ -73,7 +78,7 @@ public class CustomerController {
 		model.addAttribute("categories", categories);
 
 		Customer currentCustomer = customerService.findByUsername(principal.getName());
-		Cart activeCart = customerService.getActiveCustomerCart(currentCustomer.getId());
+		Cart activeCart = customerService.findActiveCartForCustomer(currentCustomer.getId());
 
 		model.addAttribute("customer", currentCustomer);
 		model.addAttribute("cart", activeCart);
@@ -92,7 +97,7 @@ public class CustomerController {
 
 		model.addAttribute("customer", customer);
 
-		Cart activeCart = customerService.getActiveCustomerCart(customer.getId());
+		Cart activeCart = customerService.findActiveCartForCustomer(customer.getId());
 		model.addAttribute("cart", activeCart);
 
 		Category category = categoryService.findById(categoryId);
@@ -114,7 +119,7 @@ public class CustomerController {
 
 		model.addAttribute("customer", customer);
 
-		Cart activeCart = customerService.getActiveCustomerCart(customer.getId());
+		Cart activeCart = customerService.findActiveCartForCustomer(customer.getId());
 		model.addAttribute("cart", activeCart);
 
 		Subcategory subcategory = subcategoryService.findById(subcategoryId);
@@ -136,7 +141,7 @@ public class CustomerController {
 
 		model.addAttribute("customer", customer);
 
-		Cart activeCart = customerService.getActiveCustomerCart(customer.getId());
+		Cart activeCart = customerService.findActiveCartForCustomer(customer.getId());
 		model.addAttribute("cart", activeCart);
 
 		StoreItem storeItem = storeItemService.findById(productId);
@@ -155,13 +160,42 @@ public class CustomerController {
 
 		model.addAttribute("customer", customer);
 
-		Cart activeCart = customerService.getActiveCustomerCart(customer.getId());
+		Cart activeCart = customerService.findActiveCartForCustomer(customer.getId());
 		model.addAttribute("cart", activeCart);
 
 		return "customer/cart";
 	}
 
-	@GetMapping(value = "/cart/{cartId}/item/{itemId}/quantity")
+	@GetMapping("/all_products")
+	public String showAllProducts(Model model, HttpSession session) throws CustomerNotFoundInSessionException, CartNotFoundException {
+		Customer customer = (Customer) session.getAttribute("customer");
+
+		if (customer == null) throw new CustomerNotFoundInSessionException();
+
+		Cart activeCart = customerService.findActiveCartForCustomer(customer.getId());
+
+		if (activeCart == null) throw new CartNotFoundException();
+
+		List<Store> stores =
+				storeService.findStoresByCityId(customer.getContact().getAddress().getCity().getId());
+		List<StoreItem> storeItems = new ArrayList<>();
+		StoreItemByDistributorComparator comparator = new StoreItemByDistributorComparator();
+
+		for (Store store : stores) {
+			storeItems.addAll(store.getProducts()
+					.stream().sorted((i1, i2) -> comparator.compare(i1, i2)).collect(Collectors.toList()));
+		}
+
+		model.addAttribute("customer", customer);
+		model.addAttribute("cart", activeCart);
+		model.addAttribute("storeItems", storeItems);
+		model.addAttribute("showSearch", true);
+
+		return "customer/all_products";
+	}
+
+	@GetMapping("/cart/{cartId}/item/{itemId}/quantity")
+	@ResponseBody
 	public ResponseEntity<Integer> getCartItemQuantity(@PathVariable("cartId") Long cartId,
 													   @PathVariable("itemId") Long itemId)
 			throws CartNotFoundException {

@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-	<title th:text="'Продукты категории ' + ${category.name}">Продукты категории ""</title>
+	<title>Все продукты</title>
 
 	<!-- Google font -->
 	<link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
@@ -42,18 +42,9 @@
 <header th:insert="customer/header.html :: header"></header>
 <!-- /HEADER -->
 
-<!-- BREADCRUMB -->
-<div id="breadcrumb">
-	<div class="container">
-		<ul class="breadcrumb">
-			<li><a href="#" th:href="@{/customer/main}">Главная</a></li>
-			<li class="active">
-				<span th:text="${category.name}"></span>
-			</li>
-		</ul>
-	</div>
-</div>
-<!-- /BREADCRUMB -->
+<!-- NAVIGATION -->
+<header th:insert="customer/navigation.html :: navigation"></header>
+<!-- /NAVIGATION -->
 
 <!-- HOME -->
 <div id="home">
@@ -63,7 +54,6 @@
 		<div class="home-wrap">
 			<!-- home slick -->
 			<div>
-
 				<!-- banner -->
 				<div class="banner banner-1">
 					<h2 th:if="${#lists.isEmpty(storeItems)}">Продуктов данной категории нет</h2>

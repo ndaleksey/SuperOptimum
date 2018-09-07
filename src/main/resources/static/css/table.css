@@ -4,6 +4,7 @@ table {
 	color: purple;
 	border: solid 1px #666;
 	border-collapse: collapse;
+	white-space: nowrap;
 }
 
 table th {
@@ -11,8 +12,10 @@ table th {
 	padding: 10px;
 	background-color: purple;
 	color: white;
-	vertical-align: center;
+	/*vertical-align: center;*/
 	text-align: center;
+	display: table-cell;
+	height: 50px;
 }
 
 table td {
@@ -20,6 +23,7 @@ table td {
 	border: solid 1px #666;
 	background-color: white;
 	color: #400040;
+	text-align: center;
 }
 
 td.td-alignment-center {
@@ -28,4 +32,8 @@ td.td-alignment-center {
 
 td.td-alignment-right {
 	text-align: right;
+}
+
+td.td-alignment-left {
+	text-align: left;
 }

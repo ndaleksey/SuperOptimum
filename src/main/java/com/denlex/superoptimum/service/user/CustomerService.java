@@ -13,5 +13,5 @@ public interface CustomerService {
 
 	Customer findByUsername(String username);
 
-	Cart getActiveCustomerCart(Long customerId);
+	Cart findActiveCartForCustomer(Long customerId);
 }

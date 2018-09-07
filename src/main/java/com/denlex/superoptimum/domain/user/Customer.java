@@ -61,7 +61,7 @@ public class Customer extends User {
 		this.carts.add(cart);
 	}
 
-	/*public Cart getActiveCart() throws Exception {
+	/*public Cart findActiveCartForCustomer() throws Exception {
 		if (this.carts.isEmpty()) {
 			Cart cart = new Cart(CartStatus.ACTIVE);
 			addCart(cart);
