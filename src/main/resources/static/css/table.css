@@ -22,6 +22,10 @@ table td {
 	color: #400040;
 }
 
-td.td-center {
+td.td-alignment-center {
 	text-align: center;
+}
+
+td.td-alignment-right {
+	text-align: right;
 }

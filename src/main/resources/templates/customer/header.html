@@ -76,7 +76,7 @@
 							</div>
 							<strong class="text-uppercase">Мои Заказы:</strong>
 							<br>
-							<span>total price</span>
+							<span th:text="${#aggregates.sum(cart.items.![item.price * quantity])}"> руб.</span>
 						</a>
 						<div class="custom-menu">
 							<div id="shopping-cart">

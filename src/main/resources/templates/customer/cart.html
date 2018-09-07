@@ -149,34 +149,34 @@
 						</thead>
 						<tbody>
 						<tr th:each="item,row : ${cart.items}">
-							<td class="td-center">
+							<td class="td-alignment-center">
 								<span th:text="${row.index + 1}"></span>
 							</td>
 							<td>
 								<span th:text="${item.item.product.name}"></span>
 							</td>
-							<td class="td-center">
+							<td class="td-alignment-center">
 								<span th:text="${item.quantity}"></span>
 							</td>
-							<td class="td-center">
+							<td class="td-alignment-center">
 								<span th:text="${item.item.price}"></span>
 							</td>
-							<td class="td-center">
+							<td class="td-alignment-center">
 								<span th:text="${item.quantity * item.item.price}"></span>
 							</td>
-							<td class="td-center">
+							<td class="td-alignment-center">
 								<input id="cartId" type="hidden" th:value="${cart.id}">
 								<button id="deleteItem" class="btn btn-danger" type="button"
 										th:onclick="|deleteItemFromCart(${item.id}, ${cart.id})|">Удалить
 								</button>
 							</td>
 						</tr>
-						<!--<tr>
-							<td colspan="3">Итого:</td>
-							<td>
-								<span th:text="${#aggregates.sum(cart.items.{quantity*price})}"></span>
+						<tr>
+							<td colspan="4" class="td-alignment-right">Итого:</td>
+							<td class="td-alignment-center">
+								<span th:text="${#aggregates.sum(cart.items.![item.price * quantity])}"></span>
 							</td>
-						</tr>-->
+						</tr>
 						</tbody>
 					</table>
 				</div>
