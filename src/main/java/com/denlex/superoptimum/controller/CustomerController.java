@@ -152,6 +152,67 @@ public class CustomerController {
 		return "customer/product_details";
 	}
 
+	@GetMapping("/products/search")
+	public String showProductsByName(@RequestParam("name") String name, Model model,
+									 HttpSession session) throws CustomerNotFoundInSessionException, CartNotFoundException {
+		Customer customer = (Customer) session.getAttribute("customer");
+		if (customer == null) throw new CustomerNotFoundInSessionException();
+
+		Cart activeCart = customerService.findActiveCartForCustomer(customer.getId());
+
+		if (activeCart == null) throw new CartNotFoundException();
+
+		List<StoreItem> storeItems =
+				getStoreItemsByCityId(customer.getContact().getAddress().getCity().getId());
+		StoreItemByDistributorComparator comparator = new StoreItemByDistributorComparator();
+
+		storeItems = storeItems.stream()
+				.filter(i -> i.getProduct().getName().toLowerCase().contains(name.toLowerCase()))
+				.sorted((i1, i2) -> comparator.compare(i1, i2))
+				.collect(Collectors.toList());
+		model.addAttribute("storeItems", storeItems);
+
+		return "customer/products_table :: storeItems";
+	}
+
+	@GetMapping("/products/fetch_all")
+	public String fetchAllProducts(Model model, HttpSession session) throws CustomerNotFoundInSessionException, CartNotFoundException {
+		Customer customer = (Customer) session.getAttribute("customer");
+		if (customer == null) throw new CustomerNotFoundInSessionException();
+
+		Cart activeCart = customerService.findActiveCartForCustomer(customer.getId());
+
+		if (activeCart == null) throw new CartNotFoundException();
+
+		List<StoreItem> storeItems =
+				getStoreItemsByCityId(customer.getContact().getAddress().getCity().getId());
+		StoreItemByDistributorComparator comparator = new StoreItemByDistributorComparator();
+
+		storeItems = storeItems.stream()
+				.sorted((i1, i2) -> comparator.compare(i1, i2))
+				.collect(Collectors.toList());
+		model.addAttribute("storeItems", storeItems);
+
+		return "customer/products_table :: storeItems";
+	}
+
+	@GetMapping("/products/all")
+	public String showAllProducts(Model model, HttpSession session) throws CustomerNotFoundInSessionException, CartNotFoundException {
+		Customer customer = (Customer) session.getAttribute("customer");
+
+		if (customer == null) throw new CustomerNotFoundInSessionException();
+
+		Cart activeCart = customerService.findActiveCartForCustomer(customer.getId());
+
+		if (activeCart == null) throw new CartNotFoundException();
+
+		model.addAttribute("customer", customer);
+		model.addAttribute("cart", activeCart);
+		model.addAttribute("showSearch", true);
+
+		return "customer/all_products";
+	}
+
 	@GetMapping("/cart")
 	public String showCart(Model model, HttpSession session) throws CustomerNotFoundInSessionException {
 		Customer customer = (Customer) session.getAttribute("customer");
@@ -164,34 +225,6 @@ public class CustomerController {
 		model.addAttribute("cart", activeCart);
 
 		return "customer/cart";
-	}
-
-	@GetMapping("/all_products")
-	public String showAllProducts(Model model, HttpSession session) throws CustomerNotFoundInSessionException, CartNotFoundException {
-		Customer customer = (Customer) session.getAttribute("customer");
-
-		if (customer == null) throw new CustomerNotFoundInSessionException();
-
-		Cart activeCart = customerService.findActiveCartForCustomer(customer.getId());
-
-		if (activeCart == null) throw new CartNotFoundException();
-
-		List<Store> stores =
-				storeService.findStoresByCityId(customer.getContact().getAddress().getCity().getId());
-		List<StoreItem> storeItems = new ArrayList<>();
-		StoreItemByDistributorComparator comparator = new StoreItemByDistributorComparator();
-
-		for (Store store : stores) {
-			storeItems.addAll(store.getProducts()
-					.stream().sorted((i1, i2) -> comparator.compare(i1, i2)).collect(Collectors.toList()));
-		}
-
-		model.addAttribute("customer", customer);
-		model.addAttribute("cart", activeCart);
-		model.addAttribute("storeItems", storeItems);
-		model.addAttribute("showSearch", true);
-
-		return "customer/all_products";
 	}
 
 	@GetMapping("/cart/{cartId}/item/{itemId}/quantity")
@@ -249,6 +282,16 @@ public class CustomerController {
 		cartService.save(activeCart);
 
 		return HttpStatus.OK;
+	}
+
+	private List<StoreItem> getStoreItemsByCityId(Long cityId) {
+		List<Store> stores =
+				storeService.findStoresByCityId(cityId);
+		List<StoreItem> storeItems = new ArrayList<>();
+
+		for (Store store : stores) storeItems.addAll(store.getProducts());
+
+		return storeItems;
 	}
 
 	private String getUsername() {

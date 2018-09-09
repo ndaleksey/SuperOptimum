@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<table th:fragment="storeItems" id="group-test" class="table table-striped">
+	<thead>
+	<tr>
+		<th data-priority="1">№ п/п</th>
+		<th data-priority="2">Дистрибьютор</th>
+		<th data-priority="3" style="width:400px;">Найменование</th>
+		<th data-priority="4">Производитель/<br>Страна производства</th>
+		<th data-priority="5">Цена</th>
+		<th data-priority="6">Годен до</th>
+		<th data-priority="7">Остаток</th>
+		<th data-priority="8">Примечание</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr
+			th:each="item, row : ${storeItems}">
+		<td data-priority="1">
+			<span th:text="${row.index + 1}"></span>
+		</td>
+
+		<!--Дистрибьютор-->
+		<td data-priority="2">
+			<span th:text="${item.store.distributor.companyName}"></span>
+		</td>
+
+		<!--Найменование-->
+		<td data-priority="3">
+			<a th:href="@{/customer/products/product/{productId}(productId=${item.id})}">
+				<span th:text="${item.product.name}"></span>
+			</a>
+		</td>
+
+		<!--Производитель-->
+		<td data-priority="4">
+			<span th:text="${item.product.manufacturer}"></span>
+		</td>
+
+		<!--Цена-->
+		<td data-priority="5">
+			<span th:text="${#numbers.formatInteger(item.price, 1)}"></span>
+		</td>
+
+		<!--Годен до-->
+		<td data-priority="6">
+			<span th:text="${#temporals.format(item.product.expiringDate, 'dd-MMM-yyyy')}"></span>
+		</td>
+
+		<!--Остаток-->
+		<td data-priority="7">
+			<span th:text="${#numbers.formatInteger(item.balance, 1)}"></span>
+		</td>
+
+		<!--Примечание-->
+		<td data-priority="8">
+			<span th:text="${item.product.description}"></span>
+		</td>
+	</tr>
+	</tbody>
+</table>
+</body>
+</html>

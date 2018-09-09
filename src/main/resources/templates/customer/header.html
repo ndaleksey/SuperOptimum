@@ -37,9 +37,9 @@
 				<div th:if="${showSearch eq true}" class="header-search">
 					<div class="input-group">
 						<span class="input-group-addon">Поиск</span>
-						<input type="text" name="search_text" id="search_text"
-							   placeholder="Введите наименование продукта"
-							   class="form-control" style="width: 500px; float: left;"/>
+						<input type="text" placeholder="Введите наименование продукта"
+							   class="form-control" style="width: 500px; float: left;"
+							   onkeyup="onSearchKeyUp(value)"/>
 					</div>
 				</div>
 				<!-- /Search -->
@@ -116,5 +116,6 @@
 	</div>
 	<!-- container -->
 </div>
+
 </body>
 </html>
